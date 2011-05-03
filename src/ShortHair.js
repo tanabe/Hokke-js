@@ -1,3 +1,9 @@
+/**
+ * ShortHair.js
+ * simple attach keyboard shortcut library
+ * TODO symbols are little bit scary
+ * TODO implement Space key
+ */
 (function(window) {
   var existingKeyDownEventHandler = null;
   var existingKeyPressEventHandler = null;
@@ -50,7 +56,9 @@
     //standard key
     } else {
       //normalize to lower case
+      //TODO remove this
       keyCode = String.fromCharCode(event.keyCode).toLowerCase().charCodeAt(0);
+      //console.log(keyCode);
     }
     //console.log(modifierKeyFlag, "down", event.keyCode, event.charCode);
   };
@@ -62,8 +70,8 @@
    * @param event 
    */
   var keyPressHandler = function(event) {
+    fire(search(modifierKeyFlag, String.fromCharCode(event.keyCode).toLowerCase().charCodeAt(0)));
     //console.log(modifierKeyFlag, "press", event.keyCode, event.charCode);
-    fire(search(modifierKeyFlag, keyCode));
   };
 
   var search = function(modifierKeyFlag, code) {
@@ -112,13 +120,16 @@
    * @return key pairs
    */
   var parseFormattedKey = function(formattedKey) {
-    var pattern = /^([ASC]-){0,3}(\w{1}|Left|Right|Top|Bottom)$/gi;
+    var pattern = /^([ASC]-){0,3}(\S{1}|Left|Right|Top|Bottom)$/gi;
     var modifierKeyFlag = 0;
     var keyCode = 0;
     if (pattern.exec(formattedKey)) {
       //FIXME I want use RegExp group capture instead of split. but not work.
       var keys = formattedKey.split(/-/);
-      var key = keys.pop().toLowerCase();
+      var key = keys.pop();
+      if (64 < key.charCodeAt(0) && key.charCodeAt(0) < 91) {
+        key = key.toLowerCase();
+      }
       switch (key) {
         case "left":
           keyCode = LEFT_ARROW_CODE;

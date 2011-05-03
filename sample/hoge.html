@@ -13,24 +13,22 @@
     <style type="text/css">
     </style>
 
-    <script type="text/javascript" src="ShortHair.js"></script>
+    <script type="text/javascript" src="../src/ShortHair.js"></script>
     <script type="text/javascript">
       window.onkeypress = function(event) {
-        //console.log(event.keyCode, " ", event.charCode, "is pressed");
-        //console.log(String.fromCharCode(event.keyCode));
       };
       window.onload = function() {
-        ShortHair.map("y", document.getElementById("yahoo"));
-        ShortHair.map("g", document.getElementById("google"));
-        ShortHair.map("x", function() {
-          console.log("x");
-        });
+        ShortHair.map("S-Top", document.getElementById("yahoo"));
+        ShortHair.map("$", document.getElementById("google"));
+        //ShortHair.map("x", function() {
+        //  alert("x");
+        //});
       };
     </script>
 
   </head>
   <body>
     <a href="http://google.co.jp/" id="google">Google</a>
-    <a href="http://yahoo.co.jp/" id="yahoo">Yahoo!</a>
+    <a href="http://yahoo.co.jp/" target="_blank" id="yahoo">Yahoo!</a>
   </body>
 </html>
