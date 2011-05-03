@@ -78,9 +78,29 @@
     return null;
   };
 
+  /**
+   * fire callback function or open url
+   * @name fire
+   * @function
+   * @param callback 
+   */
   var fire = function(callback) {
-    if (callback) {
+    if (!callback) {
+      return;
+    }
+
+    //function
+    if (typeof callback === "function") {
       callback.apply();
+    //anchor object
+    } else if (typeof callback === "object") {
+      var url = callback.href;
+      var target = callback.target;
+      if (!target) {
+        location.href = url;
+      } else {
+        window.open(url, target);
+      }
     }
   };
 
@@ -92,16 +112,11 @@
    * @return key pairs
    */
   var parseFormattedKey = function(formattedKey) {
-    //format is ModifierKey-Key
-    //for example
-    //C-Left
-    //S-8
-    //S-C-x
-    //console.log(">>>", formattedKey);
     var pattern = /^([ASC]-){0,3}(\w{1}|Left|Right|Top|Bottom)$/gi;
     var modifierKeyFlag = 0;
     var keyCode = 0;
     if (pattern.exec(formattedKey)) {
+      //FIXME I want use RegExp group capture instead of split. but not work.
       var keys = formattedKey.split(/-/);
       var key = keys.pop().toLowerCase();
       switch (key) {
