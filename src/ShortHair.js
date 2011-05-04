@@ -71,7 +71,7 @@
   var keyPressHandler = function(event) {
     var char = String.fromCharCode(event.keyCode);
     //symbol will ignore Shift key
-    if (isSymbol(char)) {
+    if (isSymbol(event.keyCode)) {
       modifierKeyFlag -= SHIFT_KEY_FLAG;
     }
     //FIXME
@@ -151,6 +151,12 @@
         case "down":
           keyCode = DOWN_ARROW_CODE;
           break;
+        case "space":
+          keyCode = 32;
+          break;
+        case "enter":
+          keyCode = 13;
+          break;
         default:
           //normalize to lower case
           keyCode = key.charCodeAt(0);
@@ -182,27 +188,22 @@
    * check key is alphabet
    * @name isAlphabet
    * @function
-   * @param key 
+   * @param keyCode
    * @return 
    */
-  var isAlphabet = function(key) {
-    var charCode = key.charCodeAt(0);
-    return (64 < charCode && charCode < 91) || (96 < charCode && charCode < 123);
+  var isAlphabet = function(keyCode) {
+    return (64 < keyCode && keyCode < 91) || (96 < keyCode && keyCode < 123);
   };
 
   /**
-   * check key is symbol
+   * check keyCode is symbol
    * @name isSymbol
    * @function
-   * @param key 
+   * @param keyCode
    * @return 
    */
-  var isSymbol = function(key) {
-    if (!key || key.length !== 1) {
-      return false;
-    }
-    var charCode = key.charCodeAt(0);
-    return (charCode < 33 && charCode < 65) || (charCode < 90 && charCode < 97) || (122 < charCode && charCode < 127);
+  var isSymbol = function(keyCode) {
+    return (32 < keyCode && keyCode < 65) || (90 < keyCode && keyCode < 97) || (122 < keyCode && keyCode < 127);
   };
 
   window.ShortHair = {
