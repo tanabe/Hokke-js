@@ -27,6 +27,11 @@
    * @param event keyboard event
    */
   var keyDownHandler = function(event) {
+    //if event.target is input then do nothing
+    if (isTextInputElement(event.target)) {
+      return;
+    }
+
     modifierKeyFlag = 0;
 
     if (event.shiftKey) {
@@ -69,6 +74,11 @@
    * @param event keyboard event
    */
   var keyPressHandler = function(event) {
+    //if event.target is input then do nothing
+    if (isTextInputElement(event.target)) {
+      return;
+    }
+
     //symbol will ignore Shift key
     if (isSymbol(keyCode)) {
       modifierKeyFlag -= SHIFT_KEY_FLAG;
@@ -86,12 +96,23 @@
   };
 
   /**
+   * check element type is input
+   * @name isTextInputElement
+   * @function
+   * @param element target element
+   * @return true/false
+   */
+  var isTextInputElement = function(element) {
+    return /input|textarea/i.test(element.tagName);
+  };
+
+  /**
    * 
    * @name search
    * @function
    * @param modifierKeyFlag modifier key flag 0..7
    * @param keyCode key code
-   * @return 
+   * @return callback
    */
   var search = function(modifierKeyFlag, keyCode) {
     if (keyCode) {
@@ -116,10 +137,10 @@
       return;
     }
 
-    //function
+    //if callback is function
     if (typeof callback === "function") {
       callback.apply();
-    //anchor object
+    //if callback is anchor object
     } else if (typeof callback === "object") {
       var element = callback;
       //element has click event
@@ -228,11 +249,11 @@
 
   window.Hokke = {
     /**
-     * map key and function/anchor element
+     * add hotkey
      * @name map
      * @function
-     * @param key 
-     * @param callback
+     * @param key hotkey
+     * @param callback callback is function or anchor element
      */
     map: function(key, callback) {
       //not initialized
@@ -261,8 +282,25 @@
         };
 
       }
-      //mapping
+      //add new setting to maps
       maps.push({key: parseFormattedKey(key), callback: callback});
+    },
+
+    /**
+     * remove hotkey
+     * @name unmap
+     * @function
+     * @param key hotkey
+     */
+    unmap: function(key) {
+      var parsedKey = parseFormattedKey(key);
+      for (var i = 0, length = maps.length; i < length; i++) {
+        var map = maps[i];
+        if (map.key[0] === parsedKey[0] && map.key[1] === parsedKey[1]) {
+          maps.splice(i, 1);
+          return;
+        }
+      }
     }
   };
 })(window);

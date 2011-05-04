@@ -20,7 +20,8 @@
       window.onload = function() {
         Hokke.map("S-Y", document.getElementById("yahoo"));
         Hokke.map("S-G", document.getElementById("google"));
-        Hokke.map("A-S-a", function() {
+        //Hokke.unmap("S-Y");
+        Hokke.map("a", function() {
           console.log("$$$$$$$$$$$$$$$$$");
         });
       };
@@ -31,5 +32,8 @@
     <h1>Hokke.js sample</h1>
     <a href="http://google.co.jp/" id="google">Google</a>
     <a href="http://yahoo.co.jp/" target="_blank" id="yahoo" onclick="alert('yahoo');">Yahoo!</a>
+    <h4>in input element, do nothing</h2>
+    <p><input type="text"></p>
+    <p><textarea></textarea></p>
   </body>
 </html>
