@@ -56,7 +56,6 @@
     //standard key
     } else {
       //normalize to lower case
-      //TODO remove this
       keyCode = String.fromCharCode(event.keyCode).toLowerCase().charCodeAt(0);
       //console.log(keyCode);
     }
@@ -70,8 +69,19 @@
    * @param event 
    */
   var keyPressHandler = function(event) {
-    fire(search(modifierKeyFlag, String.fromCharCode(event.keyCode).toLowerCase().charCodeAt(0)));
+    var char = String.fromCharCode(event.keyCode);
+    //symbol will ignore Shift key
+    if (isSymbol(char)) {
+      modifierKeyFlag -= SHIFT_KEY_FLAG;
+    }
+    //FIXME
+    fire(search(modifierKeyFlag, keyCode));
+
+    //below code will not work with pressed alt key
+    //fire(search(modifierKeyFlag, char.toLowerCase().charCodeAt(0)));
+
     //console.log(modifierKeyFlag, "press", event.keyCode, event.charCode);
+    //console.log(String.fromCharCode(event.keyCode));
   };
 
   var search = function(modifierKeyFlag, code) {
@@ -120,16 +130,14 @@
    * @return key pairs
    */
   var parseFormattedKey = function(formattedKey) {
-    var pattern = /^([ASC]-){0,3}(\S{1}|Left|Right|Top|Bottom)$/gi;
+    var pattern = /^([ASC]-){0,3}(\S{1}|Left|Right|Top|Bottom|Space|Enter)$/gi;
     var modifierKeyFlag = 0;
     var keyCode = 0;
     if (pattern.exec(formattedKey)) {
       //FIXME I want use RegExp group capture instead of split. but not work.
       var keys = formattedKey.split(/-/);
-      var key = keys.pop();
-      if (64 < key.charCodeAt(0) && key.charCodeAt(0) < 91) {
-        key = key.toLowerCase();
-      }
+      var key = keys.pop().toLowerCase();;
+
       switch (key) {
         case "left":
           keyCode = LEFT_ARROW_CODE;
@@ -145,7 +153,7 @@
           break;
         default:
           //normalize to lower case
-          keyCode = key.toLowerCase().charCodeAt(0);
+          keyCode = key.charCodeAt(0);
           break;
       }
 
@@ -153,7 +161,9 @@
       for (var i = 0, length = keys.length; i < length; i++) {
         switch (keys[i].toLowerCase()) {
           case "s":
-            modifierKeyFlag += SHIFT_KEY_FLAG;
+            if (!isSymbol(key)) {
+              modifierKeyFlag += SHIFT_KEY_FLAG;
+            }
             break;
           case "a":
             modifierKeyFlag += ALT_KEY_FLAG;
@@ -166,6 +176,33 @@
     }
     //console.log(modifierKeyFlag, keyCode);
     return [modifierKeyFlag, keyCode];
+  };
+
+  /**
+   * check key is alphabet
+   * @name isAlphabet
+   * @function
+   * @param key 
+   * @return 
+   */
+  var isAlphabet = function(key) {
+    var charCode = key.charCodeAt(0);
+    return (64 < charCode && charCode < 91) || (96 < charCode && charCode < 123);
+  };
+
+  /**
+   * check key is symbol
+   * @name isSymbol
+   * @function
+   * @param key 
+   * @return 
+   */
+  var isSymbol = function(key) {
+    if (!key || key.length !== 1) {
+      return false;
+    }
+    var charCode = key.charCodeAt(0);
+    return (charCode < 33 && charCode < 65) || (charCode < 90 && charCode < 97) || (122 < charCode && charCode < 127);
   };
 
   window.ShortHair = {
