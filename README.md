@@ -26,7 +26,7 @@ Enter, Space key is available too.
     Hokke.map("Enter", function(){alert("enter")});
     Hokke.map("Space", function(){alert("space")});
 
-###useing modifier keys
+###using modifier keys
 modifier keys are Shift, Ctrl and Alt.
 
 this mapping is Shift-j.
