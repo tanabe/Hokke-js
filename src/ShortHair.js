@@ -1,8 +1,6 @@
 /**
  * ShortHair.js
  * simple attach keyboard shortcut library
- * TODO symbols are little bit scary
- * TODO implement Space key
  */
 (function(window) {
   var existingKeyDownEventHandler = null;
@@ -69,12 +67,13 @@
    * @param event 
    */
   var keyPressHandler = function(event) {
-    var char = String.fromCharCode(event.keyCode);
     //symbol will ignore Shift key
-    if (isSymbol(event.keyCode)) {
+    if (isSymbol(keyCode)) {
       modifierKeyFlag -= SHIFT_KEY_FLAG;
+      if (modifierKeyFlag < 0) {
+        modifierKeyFlag = 0;
+      }
     }
-    //FIXME
     fire(search(modifierKeyFlag, keyCode));
 
     //below code will not work with pressed alt key
@@ -167,7 +166,7 @@
       for (var i = 0, length = keys.length; i < length; i++) {
         switch (keys[i].toLowerCase()) {
           case "s":
-            if (!isSymbol(key)) {
+            if (!isSymbol(keyCode)) {
               modifierKeyFlag += SHIFT_KEY_FLAG;
             }
             break;
@@ -203,6 +202,10 @@
    * @return 
    */
   var isSymbol = function(keyCode) {
+    if (isNaN(keyCode)) {
+      throw Error(keyCode + " is not a number");
+      return false;
+    }
     return (32 < keyCode && keyCode < 65) || (90 < keyCode && keyCode < 97) || (122 < keyCode && keyCode < 127);
   };
 
