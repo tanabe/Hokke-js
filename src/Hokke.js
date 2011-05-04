@@ -1,5 +1,5 @@
 /**
- * ShortHair.js
+ * Hokke.js
  * simple attach keyboard shortcut library
  * @author Hideaki Tanabe<tanablog@gmail.com>
  */
@@ -121,12 +121,19 @@
       callback.apply();
     //anchor object
     } else if (typeof callback === "object") {
-      var url = callback.href;
-      var target = callback.target;
-      if (!target) {
-        location.href = url;
+      var element = callback;
+      //element has click event
+      if (element.onclick) {
+        element.onclick.apply(element);
+      //element is normal anchor element
       } else {
-        window.open(url, target);
+        var url = element.href;
+        var target = element.target;
+        if (!target) {
+          location.href = url;
+        } else {
+          window.open(url, target);
+        }
       }
     }
   };
@@ -219,7 +226,7 @@
     return (32 < keyCode && keyCode < 65) || (90 < keyCode && keyCode < 97) || (122 < keyCode && keyCode < 127);
   };
 
-  window.ShortHair = {
+  window.Hokke = {
     /**
      * map key and function/anchor element
      * @name map
@@ -231,26 +238,26 @@
       //not initialized
       if (maps.length === 0) {
         //avoid conflict
-        if (window.onkeydown) {
-          existingKeyDownEventHandler = window.onkeydown;
+        if (document.onkeydown) {
+          existingKeyDownEventHandler = document.onkeydown;
         }
 
-        window.onkeydown = function(event) {
+        document.onkeydown = function(event) {
           if (existingKeyDownEventHandler) {
-            existingKeyDownEventHandler.apply(window, arguments);
+            existingKeyDownEventHandler.apply(document, arguments);
           }
-          keyDownHandler.apply(window, arguments);
+          keyDownHandler.apply(document, arguments);
         };
 
-        if (window.onkeypress) {
-          existingKeyPressEventHandler = window.onkeypress;
+        if (document.onkeypress) {
+          existingKeyPressEventHandler = document.onkeypress;
         }
 
-        window.onkeypress = function(event) {
+        document.onkeypress = function(event) {
           if (existingKeyPressEventHandler) {
-            existingKeyPressEventHandler.apply(window, arguments);
+            existingKeyPressEventHandler.apply(document, arguments);
           }
-          keyPressHandler.apply(window, arguments);
+          keyPressHandler.apply(document, arguments);
         };
 
       }

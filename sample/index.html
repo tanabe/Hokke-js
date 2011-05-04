@@ -5,7 +5,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta http-equiv="content-language" content="ja">
 
-    <title>ShortHair.js</title>
+    <title>Hokke.js</title>
 
     <meta http-equiv="content-script-type" content="text/javascript">
     <meta http-equiv="content-style-type" content="text/css">
@@ -13,14 +13,14 @@
     <style type="text/css">
     </style>
 
-    <script type="text/javascript" src="../src/ShortHair.js"></script>
+    <script type="text/javascript" src="../src/Hokke.js"></script>
     <script type="text/javascript">
-      window.onkeypress = function(event) {
+      document.onkeypress = function(event) {
       };
       window.onload = function() {
-        ShortHair.map("A-Y", document.getElementById("yahoo"));
-        ShortHair.map("A-G", document.getElementById("google"));
-        ShortHair.map("A-S-a", function() {
+        Hokke.map("S-Y", document.getElementById("yahoo"));
+        Hokke.map("S-G", document.getElementById("google"));
+        Hokke.map("A-S-a", function() {
           console.log("$$$$$$$$$$$$$$$$$");
         });
       };
@@ -28,8 +28,8 @@
 
   </head>
   <body>
-    <h1></h1>
+    <h1>Hokke.js sample</h1>
     <a href="http://google.co.jp/" id="google">Google</a>
-    <a href="http://yahoo.co.jp/" target="_blank" id="yahoo">Yahoo!</a>
+    <a href="http://yahoo.co.jp/" target="_blank" id="yahoo" onclick="alert('yahoo');">Yahoo!</a>
   </body>
 </html>
