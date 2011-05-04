@@ -1,14 +1,18 @@
 #Hokke.js - define hotkey library
 
+##what is it
+Hokke.js is hotkey define library.
+hot-key -> hokey -> hokke
+hokke is delicious fish
+http://ja.wikipedia.org/wiki/%E3%83%9B%E3%83%83%E3%82%B1
+
 ##usage
-Hokke.js can bind any key types.
-api are
 
- - map(key, callback)
- - unmap(key)
- - command(keys, callback)
+ - Hokke.map(key, callback)
+ - Hokke.unmap(key)
+ - Hokke.command(keys, callback)
 
-###very simple
+###ok, this is very simple
 
     Hokke.map("j", function(){alert("j")});
 
