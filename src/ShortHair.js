@@ -1,28 +1,30 @@
 /**
  * ShortHair.js
  * simple attach keyboard shortcut library
+ * @author Hideaki Tanabe<tanablog@gmail.com>
  */
 (function(window) {
   var existingKeyDownEventHandler = null;
   var existingKeyPressEventHandler = null;
+
   var maps = [];
   var modifierKeyFlag = 0;
   var keyCode = 0;
 
-  var LEFT_ARROW_CODE = -37;
-  var TOP_ARROW_CODE = -38;
+  var LEFT_ARROW_CODE  = -37;
+  var TOP_ARROW_CODE   = -38;
   var RIGHT_ARROW_CODE = -39;
-  var DOWN_ARROW_CODE = -40;
+  var DOWN_ARROW_CODE  = -40;
 
   var SHIFT_KEY_FLAG = 1;
-  var ALT_KEY_FLAG = 2;
-  var CTRL_KEY_FLAG = 4;
+  var ALT_KEY_FLAG   = 2;
+  var CTRL_KEY_FLAG  = 4;
 
   /**
    * capture modifier keys and arrow key
    * @name keyDownHandler
    * @function
-   * @param event 
+   * @param event keyboard event
    */
   var keyDownHandler = function(event) {
     modifierKeyFlag = 0;
@@ -64,7 +66,7 @@
    * capture ascii keys
    * @name keyPressHandler
    * @function
-   * @param event 
+   * @param event keyboard event
    */
   var keyPressHandler = function(event) {
     //symbol will ignore Shift key
@@ -83,11 +85,19 @@
     //console.log(String.fromCharCode(event.keyCode));
   };
 
-  var search = function(modifierKeyFlag, code) {
-    if (code) {
+  /**
+   * 
+   * @name search
+   * @function
+   * @param modifierKeyFlag modifier key flag 0..7
+   * @param keyCode key code
+   * @return 
+   */
+  var search = function(modifierKeyFlag, keyCode) {
+    if (keyCode) {
       for (var i = 0, length = maps.length; i < length; i++) {
         var map = maps[i];
-        if (map.key[0] === modifierKeyFlag && map.key[1] === code) {
+        if (map.key[0] === modifierKeyFlag && map.key[1] === keyCode) {
           return map.callback;
         }
       }
