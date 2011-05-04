@@ -31,11 +31,11 @@ modifier keys are Shift, Ctrl and Alt.
 
 this mapping is Shift-j.
 
-    Hokke.map("S-j", function(){alert("j")});
+    Hokke.map("S-j", function(){alert("j with Shift key")});
 
 more complex, this mapping is Shift-Ctrl-Right.
 
-    Hokke.map("S-C-j", function(){alert("j")});
+    Hokke.map("S-C-j", function(){alert("j with Shift key and Ctrl key")});
 
 ###callback is not only function but also anchor element
 this is mapping to anchor element (a tag).
