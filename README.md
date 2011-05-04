@@ -1,7 +1,7 @@
 #Hokke.js - define hotkey library
 
 ##what is it
-Hokke.js is hotkey define library.  
+Hokke.js is define hotkey library.  
 hot-key -> hokey -> hokke  
 hokke is delicious fish  
 http://ja.wikipedia.org/wiki/%E3%83%9B%E3%83%83%E3%82%B1
