@@ -55,6 +55,6 @@ if anchor element has onlick handler, onlick handler is high priority.
 ###command interface a.k.a konami command
 Hokke.js can define any command.
 
-this command definition means "user typing google within 5 seconds then alert showing".
+this command definition means "user typed 'google' within 5 seconds, alert showing".
 
     Hokke.command(["g", "o", "o", "g", "l", "e"], alert("google"), 5000);
