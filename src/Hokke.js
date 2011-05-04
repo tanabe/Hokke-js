@@ -4,13 +4,6 @@
  * @author Hideaki Tanabe<tanablog@gmail.com>
  */
 (function(window) {
-  var existingKeyDownEventHandler = null;
-  var existingKeyPressEventHandler = null;
-
-  var maps = [];
-  var modifierKeyFlag = 0;
-  var keyCode = 0;
-
   var LEFT_ARROW_CODE  = -37;
   var TOP_ARROW_CODE   = -38;
   var RIGHT_ARROW_CODE = -39;
@@ -19,6 +12,19 @@
   var SHIFT_KEY_FLAG = 1;
   var ALT_KEY_FLAG   = 2;
   var CTRL_KEY_FLAG  = 4;
+
+  var existingKeyDownEventHandler = null;
+  var existingKeyPressEventHandler = null;
+  var existingKeyUpEventHandler = null;
+
+  var maps = [];
+  var modifierKeyFlag = 0;
+  var keyCode = 0;
+
+  var pressed = false;
+  var commands = [];
+  var commandStack = [];
+  var timer = null;
 
   /**
    * capture modifier keys and arrow key
@@ -49,15 +55,19 @@
     //left arrow
     if (event.keyCode === 37) {
       fire(search(modifierKeyFlag, LEFT_ARROW_CODE));
+      pushCommand({modifierKeyFlag: modifierKeyFlag, keyCode: LEFT_ARROW_CODE});
     //top arrow
     } else if (event.keyCode === 38) {
       fire(search(modifierKeyFlag, TOP_ARROW_CODE));
+      pushCommand({modifierKeyFlag: modifierKeyFlag, keyCode: TOP_ARROW_CODE});
     //right arrow
     } else if (event.keyCode === 39) {
       fire(search(modifierKeyFlag, RIGHT_ARROW_CODE));
+      pushCommand({modifierKeyFlag: modifierKeyFlag, keyCode: RIGHT_ARROW_CODE});
     //down arrow
     } else if (event.keyCode === 40) {
       fire(search(modifierKeyFlag, DOWN_ARROW_CODE));
+      pushCommand({modifierKeyFlag: modifierKeyFlag, keyCode: DOWN_ARROW_CODE});
     //standard key
     } else {
       //normalize to lower case
@@ -87,10 +97,7 @@
       }
     }
     fire(search(modifierKeyFlag, keyCode));
-
-    //below code will not work with pressed alt key
-    //fire(search(modifierKeyFlag, char.toLowerCase().charCodeAt(0)));
-
+    pushCommand({modifierKeyFlag: modifierKeyFlag, keyCode: keyCode});
     //console.log(modifierKeyFlag, "press", event.keyCode, event.charCode);
     //console.log(String.fromCharCode(event.keyCode));
   };
@@ -118,7 +125,8 @@
     if (keyCode) {
       for (var i = 0, length = maps.length; i < length; i++) {
         var map = maps[i];
-        if (map.key[0] === modifierKeyFlag && map.key[1] === keyCode) {
+        if (map.key.modifierKeyFlag === modifierKeyFlag 
+            && map.key.keyCode === keyCode) {
           return map.callback;
         }
       }
@@ -164,7 +172,7 @@
    * @name parseFormattedKey
    * @function
    * @param formattedKey 
-   * @return key pairs
+   * @return modifierKeyFlag and keyCode
    */
   var parseFormattedKey = function(formattedKey) {
     var pattern = /^([ASC]-){0,3}(\S{1}|Left|Right|Top|Bottom|Space|Enter)$/gi;
@@ -217,8 +225,85 @@
         }
       }
     }
-    //console.log(modifierKeyFlag, keyCode);
-    return [modifierKeyFlag, keyCode];
+    return {modifierKeyFlag: modifierKeyFlag, keyCode: keyCode};
+  };
+
+  /**
+   * check input command
+   * @name checkCommand
+   * @function
+   * @param keys setting keys
+   * @param commandStack input stack
+   * @param timer timer
+   * @param callback callback function
+   */
+  var checkCommand = function(keys, commandStack, timer, callback) {
+    //TODO refactoring
+    return function() {
+      //console.log("check" , timer.interval);
+      var isCorrect = true;
+      //if same length -> verify
+      if (commandStack.length > 0 && commandStack.length === keys.length) {
+        for (var i = 0, length = commandStack.length; i < length; i++) {
+          //console.log(commandStack[i], keys[i]);
+          if ((commandStack[i].modifierKeyFlag !== keys[i].modifierKeyFlag) 
+          || (commandStack[i].keyCode !== keys[i].keyCode)) {
+            isCorrect = false;
+            break;
+          }
+        }
+
+        //if correct input, fire callback
+        if (isCorrect) {
+          console.log("ok");
+          fire(callback);
+        }
+        timer.stop();
+        
+      }
+      commandStack.splice(0, commandStack.length);
+      //console.log(commandStack);
+    }
+  };
+
+  /**
+   * start the command check timer
+   * @name startTimer
+   * @function
+   */
+  var startTimer = function() {
+    timer = setInterval(function() {
+      console.log("timer!");
+    }, 100);
+  };
+
+  /**
+   * stop the command check timer
+   * @name stopTimer
+   * @function
+   */
+  var stopTimer = function() {
+    clearInterval(timer);
+  };
+
+  /**
+   * push commnad to stack
+   * @name pushCommand
+   * @function
+   * @param parsedKey modifierKeyFlag and keyCode
+   */
+  var pushCommand = function(parsedKey) {
+    if (!pressed) {
+      for (var i = 0, length = commands.length; i < length; i++) {
+        var timer = commands[i].timer;
+        if (!timer.isRunning) {
+          timer.start();
+        }
+        commands[i].commandStack.push(parsedKey);
+        console.log(commands[i].commandStack);
+      }
+      pressed = true;
+    }
   };
 
   /**
@@ -247,6 +332,34 @@
     return (32 < keyCode && keyCode < 65) || (90 < keyCode && keyCode < 97) || (122 < keyCode && keyCode < 127);
   };
 
+  /**
+   * Timer class
+   * @name Timer
+   * @function
+   * @param callback callback function
+   * @param time time(ms)
+   */
+  var Timer = function(callback, time) {
+    this.interval = null;
+    this.callback = callback;
+    this.time = time;
+    this.isRunning = false;
+  };
+
+  Timer.prototype.setCallback = function(callback) {
+    this.callback = callback;
+  };
+
+  Timer.prototype.start = function() {
+    this.interval = setInterval(this.callback, this.time);
+    this.isRunning = true;
+  };
+
+  Timer.prototype.stop = function() {
+    clearInterval(this.interval);
+    this.isRunning = false;
+  };
+
   window.Hokke = {
     /**
      * add hotkey
@@ -270,6 +383,7 @@
           keyDownHandler.apply(document, arguments);
         };
 
+        //avoid conflict
         if (document.onkeypress) {
           existingKeyPressEventHandler = document.onkeypress;
         }
@@ -296,11 +410,51 @@
       var parsedKey = parseFormattedKey(key);
       for (var i = 0, length = maps.length; i < length; i++) {
         var map = maps[i];
-        if (map.key[0] === parsedKey[0] && map.key[1] === parsedKey[1]) {
+        if (map.key.modifierKeyFlag === parsedKey.modifierKeyFlag 
+            && map.key.keyCode === parsedKey.keyCode) {
           maps.splice(i, 1);
           return;
         }
       }
+    },
+
+    /**
+     * 
+     * @name command
+     * @function
+     * @param keys array of key
+     * @param callback callback is function or anchor element
+     * @param time ms
+     */
+    command: function(keys, callback, time) {
+      //console.log(keys);
+      //var timer = new Timer(function(){console.log("test")}, 1000);
+      if (commands.length === 0) {
+        if (document.onkeyup) {
+          existingKeyUpEventHandler = document.onkeyup;
+        }
+
+        document.onkeyup = function(event) {
+          if (existingKeyUpEventHandler) {
+            existingKeyUpEventHandler.apply(document, arguments);
+          }
+          pressed = false;
+        };
+      }
+
+      var commandStack = [];
+      var formattedKeys = [];
+      for (var i = 0, length = keys.length; i < length; i++) {
+        formattedKeys.push(parseFormattedKey(keys[i]));
+      }
+      var timer = new Timer(null, time);
+      timer.setCallback(checkCommand(formattedKeys, commandStack, timer, callback));
+      commands.push(
+        {
+          commandStack: commandStack,
+          timer: timer
+        }
+      );
     }
   };
 })(window);

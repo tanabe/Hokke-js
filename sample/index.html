@@ -18,6 +18,8 @@
       document.onkeypress = function(event) {
       };
       window.onload = function() {
+        Hokke.command(["g", "o", "o", "g", "l", "e"], document.getElementById("google"), 5000);
+        Hokke.command(["S-j", "j", "j"], function(){console.log("ababa")}, 500);
         Hokke.map("S-Y", document.getElementById("yahoo"));
         Hokke.map("S-G", document.getElementById("google"));
         //Hokke.unmap("S-Y");
