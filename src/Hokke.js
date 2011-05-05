@@ -302,7 +302,10 @@
         commands[i].commandStack.push(parsedKey);
         //console.log(commands[i].commandStack);
       }
-      pressed = true;
+
+      //FIXME if watching 'pressed' flag, cannott accept faster typing
+      //current Off
+      //pressed = true;
     }
   };
 
