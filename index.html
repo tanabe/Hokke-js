@@ -8,15 +8,75 @@
 
     <meta http-equiv="content-script-type" content="text/javascript">
     <meta http-equiv="content-style-type" content="text/css">
-
-    <style type="text/css">
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 
     <script type="text/javascript" src="jquery-1.6.min.js"></script>
     <script type="text/javascript" src="src/Hokke.js"></script>
+    <script type="text/javascript">
+      function activate(id) {
+        $("#" + id + " .result").addClass("active");
+        $("#" + id + " .result").text("pressed !");
+      }
+      $(function() {
+
+        Hokke.map("S-J", function() {
+          activate("sample1");
+        });
+
+        Hokke.map("C-S-Right", function() {
+          activate("sample2");
+        });
+
+        Hokke.map("S-Y", document.getElementById("yahoo"));
+
+        Hokke.command(["f", "o", "o", "b", "a", "r"], function() {
+          activate("sample4");
+        }, 3000);
+
+      });
+    </script>
 
   </head>
   <body>
     <h1>Hokke.js sample</h1>
+    <ol>
+
+      <li id="sample1">
+        <h2>press Shift-J</h2>
+<pre>
+Hokke.map("S-J", function() {
+  activate("sample1");
+});
+</pre>
+        <div class="result">not pressed</div>
+      </li>
+
+      <li id="sample2">
+        <h2>press Ctrl-Shift-Right</h2>
+<pre>
+Hokke.map("C-S-Right", function() {
+  activate("sample2");
+});
+</pre>
+        <div class="result">not pressed</div>
+      </li>
+
+      <li id="sample3">
+        <h2>press Shift-Y</h2>
+        <a href="http://yahoo.co.jp/" target="_blank" id="yahoo">open Yahoo!</a>
+<pre>
+Hokke.map("S-Y", document.getElementById("yahoo"));
+</pre>
+      </li>
+
+      <li id="sample4">
+        <h2>press foobar within 3 seconds</h2>
+<pre>
+Hokke.command(["f", "o", "o", "b", "a", "r"], document.getElementById("yahoo"));
+</pre>
+        <div class="result">not pressed</div>
+      </li>
+
+    </ol>
   </body>
 </html>

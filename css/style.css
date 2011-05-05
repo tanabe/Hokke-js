@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h1, pre, p {
+  margin: 20px;
+}
+
+pre {
+  background-color: #000;
+  color: #fff;
+  padding: 10px;
+}
+
+.result {
+  color: #f00;
+}
+
+.result.active {
+  color: #0f0;
+  font-weight: bold;
+}
+
+#box {
+  width: 100px;
+  height: 100px;
+  background-color: #00f;
+}
