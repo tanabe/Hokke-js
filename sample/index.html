@@ -19,10 +19,10 @@
       };
       window.onload = function() {
         Hokke.command(["g", "o", "o", "g", "l", "e"], document.getElementById("google"), 5000);
-        Hokke.command(["S-j", "j", "j"], function(){console.log("ababa")}, 500);
+        Hokke.command(["j", "j", "j"], function(){console.log("ababa")}, 3000);
         Hokke.map("S-Y", document.getElementById("yahoo"));
         Hokke.map("S-G", document.getElementById("google"));
-        Hokke.map("j", function(){alert("j")});
+        //Hokke.map("j", function(){alert("j")});
         //Hokke.unmap("S-Y");
         Hokke.map("a", function() {
           console.log("$$$$$$$$$$$$$$$$$");

@@ -238,53 +238,48 @@
    * @param callback callback function
    */
   var checkCommand = function(keys, commandStack, timer, callback) {
-    //TODO refactoring
+    //TODO refactoring not good...
     return function() {
-      //console.log("check" , timer.interval);
-      var isCorrect = true;
-      //if same length -> verify
-      if (commandStack.length > 0 && commandStack.length === keys.length) {
-        for (var i = 0, length = commandStack.length; i < length; i++) {
-          //console.log(commandStack[i], keys[i]);
-          if ((commandStack[i].modifierKeyFlag !== keys[i].modifierKeyFlag) 
-          || (commandStack[i].keyCode !== keys[i].keyCode)) {
-            isCorrect = false;
-            break;
-          }
-        }
+      checkCommandStack(keys, commandStack, timer, callback);
 
-        //if correct input, fire callback
-        if (isCorrect) {
-          //console.log("ok");
-          fire(callback);
-        }
-        timer.stop();
-        
-      }
+      //clear stack
       commandStack.splice(0, commandStack.length);
-      //console.log(commandStack);
     }
   };
 
   /**
-   * start the command check timer
-   * @name startTimer
+   * check input command (internal)
+   * @name checkCommand
    * @function
+   * @param keys setting keys
+   * @param commandStack input stack
+   * @param timer timer
+   * @param callback callback function
    */
-  var startTimer = function() {
-    timer = setInterval(function() {
-      //console.log("timer!");
-    }, 100);
+  var checkCommandStack = function(keys, commandStack, timer, callback) {
+    //console.log("check" , timer.interval);
+    var isCorrect = true;
+    //if same length -> verify
+    if (commandStack.length > 0 && commandStack.length === keys.length) {
+      for (var i = 0, length = commandStack.length; i < length; i++) {
+        //console.log(commandStack[i], keys[i]);
+        if ((commandStack[i].modifierKeyFlag !== keys[i].modifierKeyFlag) 
+        || (commandStack[i].keyCode !== keys[i].keyCode)) {
+          isCorrect = false;
+          break;
+        }
+      }
+
+      //if correct input, fire callback
+      if (isCorrect) {
+        //console.log("ok");
+        fire(callback);
+      }
+      timer.stop();
+    }
+    //console.log(commandStack);
   };
 
-  /**
-   * stop the command check timer
-   * @name stopTimer
-   * @function
-   */
-  var stopTimer = function() {
-    clearInterval(timer);
-  };
 
   /**
    * push commnad to stack
@@ -300,6 +295,14 @@
           timer.start();
         }
         commands[i].commandStack.push(parsedKey);
+
+        //check input keys
+        checkCommandStack(
+          commands[i].formattedKeys,
+          commands[i].commandStack,
+          commands[i].timer,
+          commands[i].callback
+        );
         //console.log(commands[i].commandStack);
       }
 
@@ -454,8 +457,10 @@
       timer.setCallback(checkCommand(formattedKeys, commandStack, timer, callback));
       commands.push(
         {
+          formattedKeys: formattedKeys,
           commandStack: commandStack,
-          timer: timer
+          timer: timer,
+          callback: callback
         }
       );
     }
