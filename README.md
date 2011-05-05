@@ -17,9 +17,9 @@ http://ja.wikipedia.org/wiki/%E3%83%9B%E3%83%83%E3%82%B1
     Hokke.map("j", function(){alert("j")});
 
 ###using arrow keys and Enter, Space
-arrow keys are Left, Top, Right and Down.
+arrow keys are Left, Up, Right and Down.
 
-    Hokke.map("Top", function(){alert("top")});
+    Hokke.map("Up", function(){alert("up")});
 
 Enter, Space key is available too.
 
