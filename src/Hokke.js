@@ -105,7 +105,7 @@
       target = window.event.srcElement;
     }
 
-   if (isTextInputElement(target)) {
+   if (isTextInputElement(target) || keyCode === 0) {
       return;
     }
 
