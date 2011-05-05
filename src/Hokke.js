@@ -255,7 +255,7 @@
 
         //if correct input, fire callback
         if (isCorrect) {
-          console.log("ok");
+          //console.log("ok");
           fire(callback);
         }
         timer.stop();
@@ -273,7 +273,7 @@
    */
   var startTimer = function() {
     timer = setInterval(function() {
-      console.log("timer!");
+      //console.log("timer!");
     }, 100);
   };
 
@@ -300,7 +300,7 @@
           timer.start();
         }
         commands[i].commandStack.push(parsedKey);
-        console.log(commands[i].commandStack);
+        //console.log(commands[i].commandStack);
       }
       pressed = true;
     }
