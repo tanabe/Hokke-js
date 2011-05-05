@@ -2,10 +2,11 @@
  * Hokke.js
  * simple attach keyboard shortcut library
  * @author Hideaki Tanabe<tanablog@gmail.com>
+ * under MIT license
  */
 (function(window) {
   var LEFT_ARROW_CODE  = -37;
-  var TOP_ARROW_CODE   = -38;
+  var UP_ARROW_CODE   = -38;
   var RIGHT_ARROW_CODE = -39;
   var DOWN_ARROW_CODE  = -40;
 
@@ -52,14 +53,15 @@
       modifierKeyFlag += CTRL_KEY_FLAG;
     }
 
+
     //left arrow
     if (event.keyCode === 37) {
       fire(search(modifierKeyFlag, LEFT_ARROW_CODE));
       pushCommand({modifierKeyFlag: modifierKeyFlag, keyCode: LEFT_ARROW_CODE});
     //top arrow
     } else if (event.keyCode === 38) {
-      fire(search(modifierKeyFlag, TOP_ARROW_CODE));
-      pushCommand({modifierKeyFlag: modifierKeyFlag, keyCode: TOP_ARROW_CODE});
+      fire(search(modifierKeyFlag, UP_ARROW_CODE));
+      pushCommand({modifierKeyFlag: modifierKeyFlag, keyCode: UP_ARROW_CODE});
     //right arrow
     } else if (event.keyCode === 39) {
       fire(search(modifierKeyFlag, RIGHT_ARROW_CODE));
@@ -175,20 +177,19 @@
    * @return modifierKeyFlag and keyCode
    */
   var parseFormattedKey = function(formattedKey) {
-    var pattern = /^([ASC]-){0,3}(\S{1}|Left|Right|Top|Bottom|Space|Enter)$/gi;
+    var pattern = /^([ASC]-){0,3}(\S{1}|Left|Right|Up|Down|Space|Enter)$/gi;
     var modifierKeyFlag = 0;
     var keyCode = 0;
     if (pattern.exec(formattedKey)) {
       //FIXME I want use RegExp group capture instead of split. but not work.
       var keys = formattedKey.split(/-/);
-      var key = keys.pop().toLowerCase();;
-
+      var key = keys.pop().toLowerCase();
       switch (key) {
         case "left":
           keyCode = LEFT_ARROW_CODE;
           break;
-        case "top":
-          keyCode = TOP_ARROW_CODE;
+        case "up":
+          keyCode = UP_ARROW_CODE;
           break;
         case "right":
           keyCode = RIGHT_ARROW_CODE;
@@ -403,6 +404,7 @@
 
       }
       //add new setting to maps
+      //console.log(parseFormattedKey(key));
       maps.push({key: parseFormattedKey(key), callback: callback});
     },
 

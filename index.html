@@ -29,9 +29,10 @@
 
         Hokke.map("S-Y", document.getElementById("yahoo"));
 
-        Hokke.command(["f", "o", "o", "b", "a", "r"], function() {
+        Hokke.command(["Down"], function() {
+        //Hokke.command(["Top", "Top", "Down", "Down", "Left", "Right", "Left", "Right", "b", "a"], function() {
           activate("sample4");
-        }, 3000);
+        }, 5000);
 
       });
     </script>
@@ -70,11 +71,11 @@ Hokke.map("S-Y", document.getElementById("yahoo"));
       </li>
 
       <li id="sample4">
-        <h2>press foobar within 3 seconds</h2>
+        <h2>press konami command within 5 seconds</h2>
 <pre>
-Hokke.command(["f", "o", "o", "b", "a", "r"], function() {
+Hokke.command(["Top", "Top", "Down", "Down", "Left", "Right", "Left", "Right", "b", "a"], function() {
   activate("sample4");
-}, 3000);
+}, 5000);
 </pre>
         <div class="result">not pressed</div>
       </li>
