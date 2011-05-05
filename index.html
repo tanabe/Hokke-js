@@ -17,6 +17,11 @@
         $("#" + id + " .result").addClass("active");
         $("#" + id + " .result").text("pressed !");
       }
+
+      function specialEffect() {
+        $("body").animate({fontSize: "2em"}, 500).animate({fontSize: "1em"}, 500);
+      }
+
       $(function() {
 
         Hokke.map("S-J", function() {
@@ -29,9 +34,8 @@
 
         Hokke.map("S-Y", document.getElementById("yahoo"));
 
-        Hokke.command(["Down"], function() {
-        //Hokke.command(["Top", "Top", "Down", "Down", "Left", "Right", "Left", "Right", "b", "a"], function() {
-          activate("sample4");
+        Hokke.command(["Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "b", "a"], function() {
+          specialEffect();
         }, 5000);
 
       });
@@ -73,11 +77,10 @@ Hokke.map("S-Y", document.getElementById("yahoo"));
       <li id="sample4">
         <h2>press konami command within 5 seconds</h2>
 <pre>
-Hokke.command(["Top", "Top", "Down", "Down", "Left", "Right", "Left", "Right", "b", "a"], function() {
-  activate("sample4");
+Hokke.command(["Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "b", "a"], function() {
+  specialEffect();
 }, 5000);
 </pre>
-        <div class="result">not pressed</div>
       </li>
 
     </ol>
