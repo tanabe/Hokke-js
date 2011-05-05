@@ -35,8 +35,19 @@
    */
   var keyDownHandler = function(event) {
     //if event.target is input then do nothing
-    if (isTextInputElement(event.target)) {
+    var target;
+    if (event) {
+      target = event.target;
+    } else {
+      target = window.event.srcElement;
+    }
+
+    if (isTextInputElement(target)) {
       return;
+    }
+
+    if (!event) {
+      event = window.event;
     }
 
     modifierKeyFlag = 0;
@@ -87,7 +98,14 @@
    */
   var keyPressHandler = function(event) {
     //if event.target is input then do nothing
-    if (isTextInputElement(event.target)) {
+    var target;
+    if (event) {
+      target = event.target;
+    } else {
+      target = window.event.srcElement;
+    }
+
+   if (isTextInputElement(target)) {
       return;
     }
 
