@@ -36,6 +36,8 @@
   var keyDownHandler = function(event) {
     //if event.target is input then do nothing
     var target;
+
+    //IE has not has not event.target
     if (event) {
       target = event.target;
     } else {
@@ -97,15 +99,17 @@
    * @param event keyboard event
    */
   var keyPressHandler = function(event) {
-    //if event.target is input then do nothing
     var target;
+
+    //IE has not has not event.target
     if (event) {
       target = event.target;
     } else {
       target = window.event.srcElement;
     }
 
-   if (isTextInputElement(target) || keyCode === 0) {
+    //if event.target is input then do nothing
+    if (isTextInputElement(target) || keyCode === 0) {
       return;
     }
 
