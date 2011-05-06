@@ -37,7 +37,7 @@
     //if event.target is input then do nothing
     var target;
 
-    //IE has not has not event.target
+    //IE has not event.target
     if (event) {
       target = event.target;
     } else {
@@ -101,7 +101,7 @@
   var keyPressHandler = function(event) {
     var target;
 
-    //IE has not has not event.target
+    //IE has not event.target
     if (event) {
       target = event.target;
     } else {
