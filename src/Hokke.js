@@ -3,6 +3,10 @@
  * simple attach keyboard shortcut library
  * @author Hideaki Tanabe<tanablog@gmail.com>
  * under MIT license
+ *
+ * TODO refactoring
+ * TBD define class, create instance (internally)
+ * TBD Hokke.map() returns hokke instance?
  */
 (function(window) {
   var LEFT_ARROW_CODE  = -37;
