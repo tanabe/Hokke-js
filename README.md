@@ -6,6 +6,9 @@ hot-key -> hokey -> hokke
 hokke is delicious fish  
 http://ja.wikipedia.org/wiki/%E3%83%9B%E3%83%83%E3%82%B1
 
+##demo
+http://tanabe.github.com/Hokke-js/
+
 ##usage
 
  - Hokke.map(key, callback)
